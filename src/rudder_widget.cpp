@@ -34,19 +34,21 @@ RudderWidget::on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr)
 
     cr->translate(5, 5);
 
+    auto fgcolor = get_style_context()->get_color(Gtk::STATE_FLAG_NORMAL);
+
     // Outer Rectangle
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
     cr->set_line_width(1.0);
     cr->rectangle(0, 0, w, h);
     cr->stroke();
 
-    cr->set_source_rgba(0.0, 0.0, 0.0, 0.5);
+    cr->set_source_rgba(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue(), 0.5);
     cr->move_to(w/2, 0);
     cr->line_to(w/2, h);
     cr->stroke();
 
     cr->set_line_width(2.0);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
     cr->move_to(w * p, 0);
     cr->line_to(w * p, h);
     cr->stroke();

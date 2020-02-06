@@ -17,11 +17,55 @@
 */
 
 #include "button_widget.hpp"
-
+#include <vector>
+
+static void draw_label(Cairo::RefPtr<Cairo::ImageSurface>& target, int width, int height, const std::string& text)
+{
+  Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(target);
+  int w = /* target->get_width()  */ width  - 10;
+  int h = /* target->get_height() */ height - 10;
+
+  // FIXME: There are better ways to center text
+  if (text.size() == 2)
+    cr->move_to(w / 2 - 6, h / 2 + 3);
+  else
+    cr->move_to(w / 2 - 4, h / 2 + 3);
+  cr->show_text(text);
+}
+
+static void invert_alpha(Cairo::RefPtr<Cairo::ImageSurface>& target)
+{
+  const int stride = target->get_stride();
+  const int w = target->get_width();
+  const int h = target->get_height();
+
+  for (int i = 0; i < h; ++i)
+  {
+    uint8_t* p = (uint8_t*)target->get_data() + i * stride;
+    for (int j = 0; j < w; ++j)
+    {
+      (*p) = ~(*p);
+      ++p;
+    }
+  }
+
+  target->mark_dirty();
+}
+
 ButtonWidget::ButtonWidget(int width, int height, const std::string& name_)
   : name(name_)
 {
+  // draw regular label mask
   set_size_request(width, height);
+  label = Cairo::ImageSurface::create(Cairo::FORMAT_A8, width, height);
+  draw_label(label, width, height, name);
+
+  // draw inverted label mask
+  //labelinv = Cairo::ImageSurface::create(Cairo::FORMAT_A8, width, height);
+  labelinv = Cairo::ImageSurface::create(Cairo::FORMAT_A8, width - 10, height - 10); // hack to stop it bleeding out
+  draw_label(labelinv, width, height, name);
+  labelinv->flush();
+  invert_alpha(labelinv);
 }
 
 bool
@@ -32,25 +76,19 @@ ButtonWidget::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
     int w  = get_allocation().get_width()  - 10;
     int h  = get_allocation().get_height() - 10;
 
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    auto fgcolor = get_style_context()->get_color(Gtk::STATE_FLAG_NORMAL);
+
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
+
     cr->set_line_width(1.0);
     cr->translate(5, 5);
     cr->rectangle(0, 0, w, h);
-
-    if (down)
-      cr->fill_preserve();
-
     cr->stroke();
 
-    if (down)
-      cr->set_source_rgb(1.0, 1.0, 1.0);
-
-    // FIXME: There are better ways to center text
-    if (name.size() == 2)
-      cr->move_to(w/2-6, h/2+3);
-    else
-      cr->move_to(w/2-4, h/2+3);
-    cr->show_text(name);
+    //FIXME: this sucks and I don't know what I'm doing
+    cr->mask(down ? labelinv : label, 0.0, 0.0);
+    cr->fill_preserve();
+    cr->stroke();
 
   return true;
 }
@@ -61,5 +99,5 @@ ButtonWidget::set_down(bool t)
   down = t;
   queue_draw();
 }
-
+
 /* EOF */

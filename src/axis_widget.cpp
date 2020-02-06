@@ -39,30 +39,32 @@ AxisWidget::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
     cr->translate(5, 5);
 
+    auto fgcolor = get_style_context()->get_color(Gtk::STATE_FLAG_NORMAL);
+
     // Outer Rectangle
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
     cr->set_line_width(1.0);
     cr->rectangle(0, 0, w, h);
     cr->stroke();
 
     // BG Circle
     cr->arc(w/2, h/2, w/2, 0.0, 2.0 * M_PI);
-    cr->set_source_rgba(0.0, 0.0, 0.0, 0.1);
+    cr->set_source_rgba(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue(), 0.1);
     cr->fill();
 
     // Cross
     cr->set_line_width(0.5);
-    cr->set_source_rgba(0.0, 0.0, 0.0, 0.5);
+    cr->set_source_rgba(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue(), 0.5);
     cr->move_to(w/2, 0);
     cr->line_to(w/2, h);
 
-    cr->set_source_rgba(0.0, 0.0, 0.0, 0.5);
+    cr->set_source_rgba(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue(), 0.5);
     cr->move_to(0, h/2);
     cr->line_to(w, h/2);
     cr->stroke();
 
     // Cursor
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
     cr->set_line_width(2.0);
     cr->move_to(px, py-5);
     cr->line_to(px, py+5);

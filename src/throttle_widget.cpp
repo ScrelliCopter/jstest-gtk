@@ -37,8 +37,10 @@ ThrottleWidget::on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr)
 
     cr->translate(5, 5);
 
+    auto fgcolor = get_style_context()->get_color(Gtk::STATE_FLAG_NORMAL);
+
     // Outer Rectangle
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->set_source_rgb(fgcolor.get_red(), fgcolor.get_green(), fgcolor.get_blue());
     cr->set_line_width(1.0);
     cr->rectangle(0, 0, w, h);
     cr->stroke();

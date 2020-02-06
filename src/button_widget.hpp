@@ -24,6 +24,7 @@
 class ButtonWidget : public Gtk::DrawingArea
 {
 private:
+  Cairo::RefPtr<Cairo::ImageSurface> label, labelinv;
   std::string name;
   bool down;
 
