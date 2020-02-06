@@ -20,7 +20,8 @@
 #define HEADER_JSTEST_GTK_BUTTON_WIDGET_HPP
 
 #include <gtkmm/drawingarea.h>
-
+
+
 class ButtonWidget : public Gtk::DrawingArea
 {
 private:
@@ -38,7 +39,8 @@ private:
   ButtonWidget(const ButtonWidget&);
   ButtonWidget& operator=(const ButtonWidget&);
 };
-
+
+
 #endif
 
 /* EOF */

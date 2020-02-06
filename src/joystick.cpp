@@ -35,7 +35,8 @@
 
 #include "evdev_helper.hpp"
 #include "joystick.hpp"
-
+
+
 Joystick::Joystick(const std::string& filename_)
   : filename(filename_)
 {
@@ -143,7 +144,8 @@ Joystick::update()
     throw std::runtime_error("Joystick::update(): unknown read error");
   }
 }
-
+
+
 std::vector<JoystickDescription>
 Joystick::get_joysticks()
 {
@@ -447,7 +449,8 @@ Joystick::get_evdev() const
 
   throw std::runtime_error("couldn't find evdev for " + filename);
 }
-
+
+
 #ifdef __TEST__
 
 // g++ -D__TEST__ joystick.cpp evdev_helper.cpp xml_writer.cpp xml_reader.cpp -o joystick-test `pkg-config --cflags --libs gtkmm-2.4 sigc++-2.0`
@@ -467,5 +470,6 @@ int main(int argc, char** argv)
   return 0;
 }
 #endif
-
+
+
 /* EOF */

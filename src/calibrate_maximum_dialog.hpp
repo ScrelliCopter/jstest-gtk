@@ -23,7 +23,8 @@
 #include <gtkmm/label.h>
 
 class Joystick;
-
+
+
 class CalibrateMaximumDialog : public Gtk::Dialog
 {
 private:
@@ -45,7 +46,8 @@ private:
   CalibrateMaximumDialog(const CalibrateMaximumDialog&);
   CalibrateMaximumDialog& operator=(const CalibrateMaximumDialog&);
 };
-
+
+
 #endif
 
 /* EOF */

@@ -28,7 +28,8 @@
 
 class XMLReader;
 class XMLWriter;
-
+
+
 class Joystick
 {
 public:
@@ -105,7 +106,8 @@ private:
   Joystick(const Joystick&);
   Joystick& operator=(const Joystick&);
 };
-
+
+
 #endif
 
 /* EOF */
